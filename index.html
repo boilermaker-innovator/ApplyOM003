@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OHLMEC Job Teaser</title>
+    <style>
+        body, html {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .card {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        h2 {
+            color: #3498db;
+            font-size: 20px;
+            margin-top: 0;
+        }
+        ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+            list-style-type: none;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .apply-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #2ecc71;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .apply-button:hover {
+            background-color: #27ae60;
+        }
+        .tab-toggle {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .tab-toggle label {
+            margin-left: 10px;
+            font-size: 16px;
+        }
+        .tab {
+            display: flex;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+        .tab button {
+            background-color: inherit;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+            flex: 1;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        .tab button.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <h1>Join Our Team at OHLMEC! 🏗️</h1>
+        </div>
+        <div class="content">
+            <div class="tab-toggle">
+                <input type="checkbox" id="tabToggle" onchange="toggleTabs()">
+                <label for="tabToggle">Tabs</label>
+            </div>
+            <div id="tabContainer" style="display: none;">
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'Overview')">Overview</button>
+                    <button class="tablinks" onclick="openTab(event, 'Positions')">Positions</button>
+                    <button class="tablinks" onclick="openTab(event, 'Requirements')">Requirements</button>
+                </div>
+            </div>
+            <div id="Overview" class="tabcontent">
+                <h2>Why Choose OHLMEC? 🌟</h2>
+                <ul>
+                    <li>🏞️ Exciting remote site opportunities</li>
+                    <li>⏰ Flexible work arrangements</li>
+                    <li>🚜 Work with cutting-edge heavy equipment</li>
+                </ul>
+            </div>
+            <div id="Positions" class="tabcontent">
+                <h2>Available Positions: 👷‍♂️</h2>
+                <ul>
+                    <li>👨‍🔧 Mechanical Supervisor</li>
+                    <li>🔧 Mechanical Fitter</li>
+                    <li>🔥 Boilermaker / Welders</li>
+                    <li>🏗️ Riggers</li>
+                    <li>🛠️ Mechanical Trades Assistants</li>
+                </ul>
+            </div>
+            <div id="Requirements" class="tabcontent">
+                <h2>What We're Looking For: 🔎</h2>
+                <ul>
+                    <li>🎓 Australian Trade Certificate</li>
+                    <li>🚔 Clean National Police Clearance</li>
+                    <li>🚗 Current Driver's License (HR preferred)</li>
+                    <li>✅ Ability to pass pre-employment checks</li>
+                    <li>🇦🇺 Full working rights in Australia</li>
+                </ul>
+            </div>
+            <a href="https://www.ohlmec.com.au/careers/" class="apply-button" target="_blank">Apply Now 🚀</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleTabs() {
+            var tabToggle = document.getElementById("tabToggle");
+            var tabContainer = document.getElementById("tabContainer");
+            var tabContents = document.getElementsByClassName("tabcontent");
+
+            if (tabToggle.checked) {
+                tabContainer.style.display = "block";
+                for (var i = 0; i < tabContents.length; i++) {
+                    tabContents[i].style.display = "none";
+                }
+                openTab(null, 'Overview');
+            } else {
+                tabContainer.style.display = "none";
+                for (var i = 0; i < tabContents.length; i++) {
+                    tabContents[i].style.display = "block";
+                }
+            }
+        }
+
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            if (evt) {
+                evt.currentTarget.className += " active";
+            } else {
+                document.querySelector('.tablinks').className += " active";
+            }
+        }
+
+        // Initialize tabs
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleTabs();
+        });
+    </script>
+</body>
+</html>
