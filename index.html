@@ -2,6 +2,11 @@
 <html>
 <head>
     <title>Teaser Creator Form</title>
+    <!-- Essential Meta Tags - Will be updated dynamically -->
+    <meta property="og:title" content="Gifylink - Create Beautiful Support Teasers">
+    <meta property="og:description" content="Transform your fundraising campaigns into engaging teasers instantly. No design skills needed.">
+    <meta property="og:image" id="metaImage" content="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiMwMEI5NjQiLz48dGV4dCB4PSIxMDAiIHk9IjEyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjcyIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdMPC90ZXh0Pjwvc3ZnPg==">
+    <meta property="twitter:card" content="summary_large_image">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -323,6 +328,14 @@ How It Works
     </div>
 
     <script>
+        function updateMetaImage(imageUrl) {
+            // Update the meta image tag with the new image
+            const metaImage = document.getElementById('metaImage');
+            if (metaImage) {
+                metaImage.setAttribute('content', imageUrl);
+            }
+        }
+
         // Image upload handling
         const imageUpload = document.getElementById('imageUpload');
         const imageInput = document.getElementById('storyImage');
@@ -339,52 +352,18 @@ How It Works
                 reader.onload = (e) => {
                     uploadedImage = e.target.result;
                     imageUpload.innerHTML = `<img src="${uploadedImage}" alt="Uploaded image" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    updateMetaImage(uploadedImage); // Update meta tag with uploaded image
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        function clearForm() {
-            document.getElementById('teaserForm').reset();
-            document.getElementById('preview').style.display = 'none';
-            document.getElementById('imageUrl').value = '';
-            imageUpload.innerHTML = `
-                <svg class="image-upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
-                <span>Click to upload header image</span>
-            `;
-            uploadedImage = null;
-        }
-
-        function switchTab(tabName, event) {
-            // Update tab buttons
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // Update tab content
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show appropriate tab and update content
-            if (tabName === 'story') {
-                document.getElementById('storyTab').classList.add('active');
-            } else {
-                document.getElementById('supportTab').classList.add('active');
-                
-                // Refresh GoFundMe widget
-                const campaignUrl = document.getElementById('gofundmeUrl').value;
-                const campaignId = extractGoFundMeId(campaignUrl);
-                document.getElementById('previewCampaign').innerHTML = campaignId ? `
-                    <h3 style="color: #00B964; margin-bottom: 20px; font-size: 24px;">Support This Campaign</h3>
-                    <iframe src="https://www.gofundme.com/f/${campaignId}/widget/large" frameborder="0" scrolling="no" 
-                        style="width: 100%; min-width: 320px; height: 365px; margin-bottom: 20px;"></iframe>
-                ` : '<p style="color: #6b7280;">Please enter a valid GoFundMe campaign URL</p>';
+        document.getElementById('imageUrl').addEventListener('change', (e) => {
+            const imageUrl = e.target.value;
+            if (imageUrl) {
+                updateMetaImage(imageUrl);
             }
-        }
+        });
 
         function extractGoFundMeId(url) {
             if (!url) return null;
@@ -402,47 +381,17 @@ How It Works
             }
         }
 
-        function previewTeaser() {
-            const preview = document.getElementById('preview');
-            const title = document.getElementById('mainTitle').value;
-            const subtitle = document.getElementById('subtitle').value;
-            const story = document.getElementById('storyContent').value;
-            const campaignUrl = document.getElementById('gofundmeUrl').value;
-
-            // Update image preview if exists
-            const previewImage = document.getElementById('previewImage');
-            const imageUrl = document.getElementById('imageUrl').value;
-            if (uploadedImage) {
-                // If there's an uploaded image, it takes precedence
-                previewImage.innerHTML = `<img src="${uploadedImage}" alt="Story header" class="preview-image">`;
-            } else if (imageUrl) {
-                // If no upload but URL is provided, use the URL
-                previewImage.innerHTML = `<img src="${imageUrl}" alt="Story header" class="preview-image">`;
-            } else {
-                previewImage.innerHTML = '';
-            }
-
-            // Update story tab
-            document.getElementById('previewTitle').innerHTML = `
-                <h3 style="color: #00B964; margin-bottom: 10px; font-size: 24px;">${title}</h3>
-                <p style="color: #6b7280; margin-bottom: 20px;">${subtitle}</p>
+        function clearForm() {
+            document.getElementById('teaserForm').reset();
+            document.getElementById('preview').style.display = 'none';
+            document.getElementById('imageUrl').value = '';
+            imageUpload.innerHTML = `
+                <svg class="image-upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                <span>Click to upload header image</span>
             `;
+            uploadedImage = null;
             
-            document.getElementById('previewStory').innerHTML = story.split('\n').map(para => 
-                `<p style="margin-bottom: 15px;">${para}</p>`
-            ).join('');
-
-            // Update support tab with GoFundMe widget
-            const campaignId = campaignUrl ? extractGoFundMeId(campaignUrl) : null;
-            document.getElementById('previewCampaign').innerHTML = campaignId ? `
-                <h3 style="color: #00B964; margin-bottom: 20px; font-size: 24px;">Support This Campaign</h3>
-                <iframe src="https://www.gofundme.com/f/${campaignId}/widget/large" frameborder="0" scrolling="no" 
-                    style="width: 100%; min-width: 320px; height: 365px; margin-bottom: 20px;"></iframe>
-            ` : '<p style="color: #6b7280;">Please enter a valid GoFundMe campaign URL</p>';
-            
-            preview.style.display = 'block';
-            preview.scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
-</body>
-</html>
+            // Reset meta image to default logo
+            updateMetaImage("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJ
